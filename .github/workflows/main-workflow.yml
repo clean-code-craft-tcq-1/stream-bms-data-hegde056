@@ -14,10 +14,16 @@ jobs:
       run: sudo apt-get install -y gcovr
 
     - name: build
-      run: g++ -Wall -Wextra -fprofile-arcs -ftest-coverage -o testchecker *.c*
+      run: g++ -Wall -Wextra -fprofile-arcs -ftest-coverage -o sender bms-stream-sender-app.cpp bms-stream-sender.cpp
+      
+    - name: build
+      run: g++ -Wall -Wextra -fprofile-arcs -ftest-coverage -o sender-test test-bms-data-sender.cpp bms-stream-sender.cpp
       
     - name: run
-      run: ./testchecker
+      run: ./sender
+
+    - name: run
+      run: ./sender-test 
 
     - name: collect coverage
       run: gcovr --gcov-exclude=".*test.*" -r . --html --html-details -o coverage.html

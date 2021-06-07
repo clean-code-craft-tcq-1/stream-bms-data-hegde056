@@ -40,14 +40,8 @@ void BMSDataStreamer::StreamBMSData()
 
     //print stream data csv format 
     for (int i = NUM_OF_READINGS; i > 0; --i) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(250));
         std::cout << this->getBmsStreamData() << std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(DELAY_PER_READING));
     }
 }
 
-//int main()
-//{
-//    BMSDataStreamer bmsStreamObj;
-//    bmsStreamObj.StreamBMSData();
-//    return 0;
-//}

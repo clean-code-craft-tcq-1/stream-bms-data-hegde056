@@ -12,6 +12,7 @@
 #define SOC_MAX		80U
 
 #define NUM_OF_READINGS	50U
+#define DELAY_PER_READING	250U /*in milliseconds*/
 
 
 class RandomNumGenerator
