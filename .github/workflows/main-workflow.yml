@@ -14,10 +14,10 @@ jobs:
       run: sudo apt-get install -y gcovr
 
     - name: build
-      run: g++ -Wall -Wextra -fprofile-arcs -ftest-coverage -o sender bms-stream-sender-app.cpp bms-stream-sender.cpp
+      run: g++ -Wall -Wextra -fprofile-arcs -ftest-coverage -o sender bms-stream-sender/*.cpp
       
     - name: build
-      run: g++ -Wall -Wextra -fprofile-arcs -ftest-coverage -o sender-test test-bms-data-sender.cpp bms-stream-sender.cpp
+      run: g++ -Wall -Wextra -fprofile-arcs -ftest-coverage -o sender-test test/*.cpp bms-stream-sender/bms-stream-sender.cpp
       
     - name: run
       run: ./sender

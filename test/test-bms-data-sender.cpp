@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 
-#include "test/catch.hpp"
-#include "bms-stream-sender.h"
+#include "catch.hpp"
+#include "../bms-stream-sender/bms-stream-sender.h"
 #include <vector>
 
 TEST_CASE("Test Random number generator") {
