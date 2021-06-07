@@ -12,6 +12,11 @@ int RandomNumGenerator::getRandomNumInRange(int min, int max)
     return randomNum;
 }
 
+bool BMSDataStreamer::checkStreamingDone()
+{
+    return this->isStreamingDone;
+}
+
 int BMSDataStreamer::getTemperatureValue()
 {
     return randomNumObj.getRandomNumInRange(TEMP_MIN, TEMP_MAX);
@@ -35,13 +40,15 @@ std::string BMSDataStreamer::getBmsStreamData()
 
 void BMSDataStreamer::StreamBMSData()
 {
-    //print stream heading csv format 
+    //console output stream heading csv format 
     std::cout << "Battery Temperature,Battery SOC"<< std::endl;
 
-    //print stream data csv format 
+    //console output stream data csv format 
     for (int i = NUM_OF_READINGS; i > 0; --i) {
         std::cout << this->getBmsStreamData() << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(DELAY_PER_READING));
     }
+
+    this->isStreamingDone = true;
 }
 

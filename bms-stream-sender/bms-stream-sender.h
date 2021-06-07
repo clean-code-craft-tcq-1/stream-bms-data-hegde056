@@ -25,8 +25,10 @@ public:
 class BMSDataStreamer
 {
 private:
+	bool isStreamingDone = false; 
 	RandomNumGenerator randomNumObj;
 public:
+	bool checkStreamingDone();
 	int getTemperatureValue(void);
 	int getSocValue(void);
 	std::string getBmsStreamData();

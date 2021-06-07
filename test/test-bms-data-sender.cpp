@@ -45,3 +45,10 @@ TEST_CASE("Test BMS Stream") {
 	REQUIRE((v[0] >= TEMP_MIN) & (v[0] <= TEMP_MAX));
 	REQUIRE((v[1] >= SOC_MIN) & (v[1] <= SOC_MAX));
 }
+
+TEST_CASE("Test for stream completion") {
+	BMSDataStreamer bmsStreamObj;
+	REQUIRE(bmsStreamObj.checkStreamingDone() == false);
+	bmsStreamObj.StreamBMSData();
+	REQUIRE(bmsStreamObj.checkStreamingDone() == true);
+}
