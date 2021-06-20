@@ -14,4 +14,4 @@ jobs:
       run: sudo npm install -g jscpd
 
     - name: No Duplication beyond 3 lines
-      run: jscpd . --min-lines 3 --min-tokens 48 --threshold 0
+      run: jscpd ./bms-stream-sender --min-lines 3 --min-tokens 48 --threshold 0
