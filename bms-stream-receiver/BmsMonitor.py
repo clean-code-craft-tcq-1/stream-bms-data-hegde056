@@ -28,20 +28,23 @@ def getBMSAnalyticsFromStream():
   for line in sys.stdin:
       line = line.strip()
       if isNotEmptyOrHeader(line):
-          saveTemperatureToBuffer(line.split(',')[0])
-          saveSocToBuffer(line.split(',')[1])
+          saveTemperatureToBuffer(line)
+          saveSocToBuffer(line)
           displayBMSAnalytics(line)
           
+def saveTemperatureToBuffer(line):
+    if ',' in line:
+        temperature = line.split(',')[0]
+        temperature_buffer.append(int(temperature))
+        if len(temperature_buffer)>5:        
+            temperature_buffer.pop(0) #to always maintain latest 5 temperature values for computing SMA
 
-def saveTemperatureToBuffer(temperature):
-    temperature_buffer.append(int(temperature))
-    if len(temperature_buffer)>5:        
-        temperature_buffer.pop(0) #to always maintain latest 5 temperature values for computing SMA
-
-def saveSocToBuffer(soc):
-    soc_buffer.append(int(soc))
-    if len(soc_buffer)>5:
-        soc_buffer.pop(0) #to always maintain latest 5 SOC values for computing SMA
+def saveSocToBuffer(line):
+    if ',' in line:
+        soc = line.split(',')[1]
+        soc_buffer.append(int(soc))
+        if len(soc_buffer)>5:
+            soc_buffer.pop(0) #to always maintain latest 5 SOC values for computing SMA
 
 #Display Maximum, Minimum, and Simple moving average of Battery Parameters
 def displayBMSAnalytics(line):
@@ -96,7 +99,7 @@ def getMinimumSOC(soc):
 
 #Skip header line and new line sent by sender for stream
 def isNotEmptyOrHeader(line):
-    if line != '' and line != header and not ',' in line:
+    if line != '' and line != header:
         return True
     else:
         return False
