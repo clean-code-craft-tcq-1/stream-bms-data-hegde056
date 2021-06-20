@@ -27,28 +27,26 @@ header = "Battery Temperature,Battery SOC"
 def getBMSAnalyticsFromStream():
   for line in sys.stdin:
       line = line.strip()
-      if isNotEmptyOrHeader(line):
+      if isValidLine(line):
           saveTemperatureToBuffer(line)
           saveSocToBuffer(line)
           displayBMSAnalytics(line)
           
 def saveTemperatureToBuffer(line):
-    if ',' in line:
-        temperature = line.split(',')[0]
-        temperature_buffer.append(int(temperature))
-        if len(temperature_buffer)>5:        
-            temperature_buffer.pop(0) #to always maintain latest 5 temperature values for computing SMA
+    temperature = line.split(',')[0]
+    temperature_buffer.append(int(temperature))
+    if len(temperature_buffer)>5:        
+        temperature_buffer.pop(0) #to always maintain latest 5 temperature values for computing SMA
 
 def saveSocToBuffer(line):
-    if ',' in line:
-        soc = line.split(',')[1]
-        soc_buffer.append(int(soc))
-        if len(soc_buffer)>5:
-            soc_buffer.pop(0) #to always maintain latest 5 SOC values for computing SMA
+    soc = line.split(',')[1]
+    soc_buffer.append(int(soc))
+    if len(soc_buffer)>5:
+        soc_buffer.pop(0) #to always maintain latest 5 SOC values for computing SMA
 
 #Display Maximum, Minimum, and Simple moving average of Battery Parameters
 def displayBMSAnalytics(line):
-    temperature, soc = line.split(',')
+    temperature, soc = line.split(',')         #get current temperature and soc
     print('Maximum Temperature Value is        :',getMaximumTemperature(int(temperature)))
     print('Minimum Temperature Value is        :',getMinimumTemperature(int(temperature)))
     print('Maximum State of Charge Value is    :',getMaximumSOC(int(soc)))
@@ -100,6 +98,12 @@ def getMinimumSOC(soc):
 #Skip header line and new line sent by sender for stream
 def isNotEmptyOrHeader(line):
     if line != '' and line != header:
+        return True
+    else:
+        return False
+
+def isValidLine(line):
+    if isNotEmptyOrHeader(line) and ',' not in line:
         return True
     else:
         return False
