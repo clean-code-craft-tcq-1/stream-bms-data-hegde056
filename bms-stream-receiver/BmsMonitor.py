@@ -103,7 +103,7 @@ def isNotEmptyOrHeader(line):
         return False
 
 def isValidLine(line):
-    if isNotEmptyOrHeader(line) and not ',' in line:
+    if isNotEmptyOrHeader(line) and ',' in line:
         return True
     else:
         return False
