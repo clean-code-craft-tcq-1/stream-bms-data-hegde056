@@ -34,7 +34,7 @@ jobs:
         name: coverage
         path: ./*.html
         retention-days: 1
-		
+
     - name: Set up Python 3.9
       uses: actions/setup-python@v2
       with:
