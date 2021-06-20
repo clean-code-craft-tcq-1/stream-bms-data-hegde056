@@ -96,7 +96,7 @@ def getMinimumSOC(soc):
 
 #Skip header line and new line sent by sender for stream
 def isNotEmptyOrHeader(line):
-    if line != '' and line != header:
+    if line != '' and line != header and not ',' in line:
         return True
     else:
         return False
