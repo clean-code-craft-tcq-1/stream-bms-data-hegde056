@@ -1,0 +1,56 @@
+name: Build and Run
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: install coverage tool
+      run: sudo apt-get install -y gcovr
+
+    - name: build
+      run: g++ -Wall -Wextra -fprofile-arcs -ftest-coverage -o sender bms-stream-sender/*.cpp
+      
+    - name: build
+      run: g++ -Wall -Wextra -fprofile-arcs -ftest-coverage -o sender-test test/*.cpp bms-stream-sender/bms-stream-sender.cpp
+      
+    - name: run
+      run: ./sender
+
+    - name: run
+      run: ./sender-test 
+
+    - name: collect coverage
+      run: gcovr --gcov-exclude=".*test.*" -r . --html --html-details -o coverage.html
+
+    - name: create coverage artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage
+        path: ./*.html
+        retention-days: 1
+    
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    
+    - name: Lint with flake8
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings.
+        flake8 . --count --exit-zero --max-line-length=80 --ignore=E111,E121,E126 --statistics
+    
+    - name: Run
+      run: ./sender-test | python bms-stream-receiver/BmsMonitor.py
